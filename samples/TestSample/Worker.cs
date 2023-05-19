@@ -1,3 +1,4 @@
+using MinimalMediator.Abstractions;
 using MinimalMediator.Core;
 
 namespace TestSample;

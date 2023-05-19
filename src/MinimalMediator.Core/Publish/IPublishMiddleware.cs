@@ -3,6 +3,7 @@ using MinimalMediator.Core.Context;
 
 namespace MinimalMediator.Core.Publish;
 
-public interface IPublishMiddleware : IMediatorMiddleware<PublishContext>
+public interface IPublishMiddleware<TMessage> : IMediatorMiddleware<PublishContext<TMessage>>
+    where TMessage : class
 {
 }

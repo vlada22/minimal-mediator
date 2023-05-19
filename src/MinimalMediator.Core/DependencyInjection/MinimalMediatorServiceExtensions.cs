@@ -1,3 +1,4 @@
+using MinimalMediator.Abstractions;
 using MinimalMediator.Abstractions.Pipeline;
 using MinimalMediator.Core;
 using MinimalMediator.Core.DependencyInjection;
