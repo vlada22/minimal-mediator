@@ -6,11 +6,11 @@ using MinimalMediator.Core.DependencyInjection;
 
 namespace MinimalMediator.Core;
 
-public class MinimalMediator : IMediator
+public class MediatorDefault : IMediator
 {
     private readonly IMediatorDependencyContext _dependencyContext;
 
-    public MinimalMediator(IMediatorDependencyContext dependencyContext)
+    public MediatorDefault(IMediatorDependencyContext dependencyContext)
     {
         _dependencyContext = dependencyContext;
     }

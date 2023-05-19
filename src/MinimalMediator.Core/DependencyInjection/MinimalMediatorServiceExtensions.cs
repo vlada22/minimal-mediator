@@ -1,8 +1,10 @@
-using Microsoft.Extensions.DependencyInjection;
 using MinimalMediator.Abstractions.Pipeline;
+using MinimalMediator.Core;
+using MinimalMediator.Core.DependencyInjection;
 using MinimalMediator.Core.Middleware;
 
-namespace MinimalMediator.Core.DependencyInjection;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class MinimalMediatorServiceExtensions
 {
@@ -17,7 +19,7 @@ public static class MinimalMediatorServiceExtensions
         services.AddTransient(typeof(IPipeMiddlewareBuilder<>), typeof(PipeMiddlewareBuilder<>));
         services.AddTransient(typeof(IPipeMiddlewareBuilder<,>), typeof(PipeMiddlewareBuilder<,>));
 
-        services.Add(ServiceDescriptor.Describe(typeof(IMediator), typeof(MinimalMediator), lifetime));
+        services.Add(ServiceDescriptor.Describe(typeof(IMediator), typeof(MediatorDefault), lifetime));
 
         return services;
     }
