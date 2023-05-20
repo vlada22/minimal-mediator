@@ -1,16 +1,22 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using MinimalMediator.Abstractions.Middleware;
-using MinimalMediator.Core.DependencyInjection;
+using MinimalMediator.Core.Messaging;
+using MinimalMediator.Core.Middleware;
 using TestSample;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ServicesB>();
 builder.Services.AddTransient<ServicesC>();
-builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IMediatorMiddleware<TestContext>), typeof(ValidationMediatorMiddleware)));
-builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IMediatorMiddleware<TestContext>), typeof(ValidationMiddleware2)));
-builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IMediatorMiddleware<TestContext>), typeof(ExceptionMediatorMiddleware)));
-builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IMediatorMiddleware<TestContext>), typeof(ValidationMiddleware3)));
+builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IAfterPublishMiddleware<TestContext>), typeof(ValidationMediatorMiddleware3)));
+builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IBeforePublishMiddleware<TestContext>), typeof(ValidationMediatorMiddleware)));
+builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IBeforePublishMiddleware<TestContext>), typeof(ValidationMediatorMiddleware1)));
+builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IAfterPublishMiddleware<TestContext>), typeof(ValidationMediatorMiddleware2)));
+
+builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IConsumer<TestContext>), typeof(Consumer1)));
+builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IConsumer<TestContext>), typeof(Consumer2)));
+builder.Services.AddTransient(typeof(IReceiver<TestContext, TestResponse>), typeof(Sender1));
+builder.Services.AddTransient(typeof(IReceiverStream<TestContext, TestResponse>), typeof(Sender2));
+builder.Services.AddTransient(typeof(IReceiverStreamAsync<TestContext, TestResponse>), typeof(Sender3));
 
 builder.Services.AddMinimalMediator(ServiceLifetime.Scoped);
 

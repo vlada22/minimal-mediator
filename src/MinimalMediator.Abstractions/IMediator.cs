@@ -1,12 +1,21 @@
-using MinimalMediator.Abstractions.Context;
+using System.Threading.Channels;
 
 namespace MinimalMediator.Abstractions;
 
 public interface IMediator
 {
-    Task Test<TContext>(TContext context, CancellationToken cancellationToken)
-        where TContext : class, IPipeContext;
+    Task<TResponse?> SendStreamAsync<TMessage, TResponse>(IAsyncEnumerable<TMessage> message, CancellationToken cancellationToken)
+        where TMessage : class
+        where TResponse : class;
+    
+    Task<TResponse?> SendStreamAsync<TMessage, TResponse>(ChannelReader<TMessage> message, CancellationToken cancellationToken)
+        where TMessage : class
+        where TResponse : class;
+    
+    Task<TResponse?> SendAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken)
+        where TMessage : class
+        where TResponse : class;
 
-    Task PublishAsync<T>(T context, CancellationToken cancellationToken)
-        where T : class;
+    Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken)
+        where TMessage : class;
 }

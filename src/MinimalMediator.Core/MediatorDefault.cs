@@ -1,12 +1,12 @@
 using System.Collections.Concurrent;
+using System.Threading.Channels;
 using Microsoft.Extensions.DependencyInjection;
 using MinimalMediator.Abstractions;
-using MinimalMediator.Abstractions.Context;
-using MinimalMediator.Abstractions.Middleware;
 using MinimalMediator.Abstractions.Pipeline;
 using MinimalMediator.Core.Context;
 using MinimalMediator.Core.DependencyInjection;
-using MinimalMediator.Core.Store;
+using MinimalMediator.Core.Middleware;
+using MinimalMediator.Core.Pipe;
 
 namespace MinimalMediator.Core;
 
@@ -20,29 +20,38 @@ public sealed class MediatorDefault : IMediator
         _dependencyContext = dependencyContext;
     }
 
-    public async Task Test<TContext>(TContext context, CancellationToken cancellationToken)
-        where TContext : class, IPipeContext
+    public Task<TResponse?> SendStreamAsync<TMessage, TResponse>(IAsyncEnumerable<TMessage> message, CancellationToken cancellationToken) where TMessage : class where TResponse : class
     {
-        var pipeBuilder = _dependencyContext.ActivationServices.GetRequiredService<IPipeMiddlewareBuilder<TContext>>();
-        
-        var pipePre = pipeBuilder.Build<IPreprocessMiddleware<TContext>>();
+        var stateMachine = _dependencyContext.ActivationServices
+            .GetRequiredService<ISendStateMachine<TMessage, TResponse>>();
 
-        await pipePre.InvokeAsync(context, cancellationToken);
-        
-        var pipePost = pipeBuilder.Build<IPostProcessMiddleware<TContext>>();
-        
-        await pipePost.InvokeAsync(context, cancellationToken);
+        return stateMachine.ProcessAsync(message, cancellationToken);
     }
 
-    public Task PublishAsync<T>(T context, CancellationToken cancellationToken) where T : class
+    public Task<TResponse?> SendStreamAsync<TMessage, TResponse>(ChannelReader<TMessage> message, CancellationToken cancellationToken) where TMessage : class where TResponse : class
     {
-        var publisher = (IPipe<PublishContext<T>>) _publishers.GetOrAdd(typeof(T), _dependencyContext.ActivationServices.GetRequiredService<IPipe<PublishContext<T>>>());
+        var stateMachine = _dependencyContext.ActivationServices
+            .GetRequiredService<ISendStateMachine<TMessage, TResponse>>();
 
-        return publisher.InvokeAsync(context, cancellationToken);
+        return stateMachine.ProcessAsync(message, cancellationToken);
     }
 
-    public ValueTask DisposeAsync()
+    public Task<TResponse?> SendAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken) 
+        where TMessage : class 
+        where TResponse : class
     {
-        return new ValueTask();
+        var stateMachine = _dependencyContext.ActivationServices
+            .GetRequiredService<ISendStateMachine<TMessage, TResponse>>();
+
+        return stateMachine.ProcessAsync(message, cancellationToken);
+    }
+
+    public Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken) 
+        where TMessage : class
+    {
+        var stateMachine = _dependencyContext.ActivationServices
+            .GetRequiredService<IPublishStateMachine<TMessage>>();
+
+        return stateMachine.ProcessAsync(message, cancellationToken);
     }
 }

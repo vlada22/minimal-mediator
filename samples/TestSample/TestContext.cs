@@ -1,8 +1,4 @@
-using MinimalMediator.Abstractions.Context;
-
 namespace TestSample;
 
-public record TestContext(string Name) : IPipeContext
-{
-    public Guid Id { get; } = Guid.NewGuid();
-}
+public record TestContext(string Name);
+public record TestResponse(string Name);
