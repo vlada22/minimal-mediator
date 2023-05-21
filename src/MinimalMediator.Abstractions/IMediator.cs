@@ -7,6 +7,14 @@ namespace MinimalMediator.Abstractions;
 /// </summary>
 public interface IMediator
 {
+    Task<IAsyncEnumerable<TResponse>> ReceiveStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken)
+        where TMessage : class
+        where TResponse : class;
+    
+    Task<ChannelReader<TResponse>> ReceiveChannelStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken)
+        where TMessage : class
+        where TResponse : class;
+
     /// <summary>
     /// Sends a stream of messages to a consumer.
     /// </summary>

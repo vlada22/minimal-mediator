@@ -12,6 +12,22 @@ public interface ISendStateMachine<TMessage, TResponse>
     where TResponse : class
 {
     /// <summary>
+    /// Process <see cref="IAsyncEnumerable{T}"/> stream asynchronously.
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<IAsyncEnumerable<TResponse>> ProcessStreamAsync(TMessage message, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Process <see cref="ChannelReader{T}"/> stream asynchronously.
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<ChannelReader<TResponse>> ProcessChannelStreamAsync(TMessage message, CancellationToken cancellationToken);
+
+    /// <summary>
     /// Process a send state machine asynchronously.
     /// </summary>
     /// <param name="message"></param>

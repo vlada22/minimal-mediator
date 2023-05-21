@@ -17,6 +17,20 @@ public class SendStateMachineDefault<TMessage, TResponse> : ISendStateMachine<TM
         _dependencyContext = dependencyContext;
     }
 
+    public Task<IAsyncEnumerable<TResponse>> ProcessStreamAsync(TMessage message, CancellationToken cancellationToken)
+    {
+        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverStreamAsync<TMessage, TResponse>>();
+        
+        return consumer.ReceiveAsync(message, cancellationToken);
+    }
+
+    public Task<ChannelReader<TResponse>> ProcessChannelStreamAsync(TMessage message, CancellationToken cancellationToken)
+    {
+        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverStream<TMessage, TResponse>>();
+        
+        return consumer.ReceiveAsync(message, cancellationToken);
+    }
+
     public Task<TResponse?> ProcessAsync(TMessage message, CancellationToken cancellationToken)
     {
         var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiver<TMessage, TResponse>>();
