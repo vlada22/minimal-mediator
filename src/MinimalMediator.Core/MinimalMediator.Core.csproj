@@ -16,8 +16,4 @@
       <ProjectReference Include="..\MinimalMediator.Abstractions\MinimalMediator.Abstractions.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Send\" />
-    </ItemGroup>
-
 </Project>

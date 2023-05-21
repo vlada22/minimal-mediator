@@ -19,22 +19,22 @@ public class SendStateMachineDefault<TMessage, TResponse> : ISendStateMachine<TM
 
     public Task<TResponse?> ProcessAsync(TMessage message, CancellationToken cancellationToken)
     {
-        var consumer = _dependencyContext.ActivationServices.GetService<IReceiver<TMessage, TResponse>>();
-        
-        return consumer?.ReceiveAsync(message, cancellationToken) ?? Task.FromResult<TResponse?>(default);
+        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiver<TMessage, TResponse>>();
+
+        return consumer.ReceiveAsync(message, cancellationToken);
     }
 
     public Task<TResponse?> ProcessAsync(ChannelReader<TMessage> reader, CancellationToken cancellationToken)
     {
-        var consumer = _dependencyContext.ActivationServices.GetService<IReceiverStream<TMessage, TResponse>>();
+        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverStream<TMessage, TResponse>>();
         
-        return consumer?.ReceiveAsync(reader, cancellationToken) ?? Task.FromResult<TResponse?>(default);
+        return consumer.ReceiveAsync(reader, cancellationToken);
     }
 
     public Task<TResponse?> ProcessAsync(IAsyncEnumerable<TMessage> reader, CancellationToken cancellationToken)
     {
-        var consumer = _dependencyContext.ActivationServices.GetService<IReceiverStreamAsync<TMessage, TResponse>>();
+        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverStreamAsync<TMessage, TResponse>>();
         
-        return consumer?.ReceiveAsync(reader, cancellationToken) ?? Task.FromResult<TResponse?>(default);
+        return consumer.ReceiveAsync(reader, cancellationToken);
     }
 }
