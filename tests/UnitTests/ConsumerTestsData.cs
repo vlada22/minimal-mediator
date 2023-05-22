@@ -29,7 +29,7 @@ public class ConsumerAfterMiddleware : IAfterPublishMiddleware<ConsumerMessage>
     }
 }
 
-[MinimalMediator(2)]
+[MinimalMediator(Order = 2)]
 public class ConsumerBeforeMiddleware1 : IBeforePublishMiddleware<ConsumerMessage>
 {
     private readonly SharedService _sharedService;
@@ -51,7 +51,7 @@ public class ConsumerBeforeMiddleware1 : IBeforePublishMiddleware<ConsumerMessag
     }
 }
 
-[MinimalMediator(1)]
+[MinimalMediator(Order = 1)]
 public class ConsumerBeforeMiddleware2 : IBeforePublishMiddleware<ConsumerMessage>
 {
     private readonly SharedService _sharedService;

@@ -7,11 +7,11 @@ namespace MinimalMediator.Abstractions;
 /// </summary>
 public interface IMediator
 {
-    IAsyncEnumerable<TResponse> ReceiveStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken)
+    IAsyncEnumerable<TResponse> ReceiveStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken = default)
         where TMessage : class
         where TResponse : class;
     
-    Task<ChannelReader<TResponse>> ReceiveChannelStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken)
+    Task<ChannelReader<TResponse>> ReceiveChannelStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken = default)
         where TMessage : class
         where TResponse : class;
 
@@ -23,7 +23,7 @@ public interface IMediator
     /// <typeparam name="TMessage"></typeparam>
     /// <typeparam name="TResponse"></typeparam>
     /// <returns></returns>
-    Task<TResponse?> SendStreamAsync<TMessage, TResponse>(IAsyncEnumerable<TMessage> message, CancellationToken cancellationToken)
+    Task<TResponse?> SendStreamAsync<TMessage, TResponse>(IAsyncEnumerable<TMessage> message, CancellationToken cancellationToken = default)
         where TMessage : class
         where TResponse : class;
     
@@ -35,7 +35,7 @@ public interface IMediator
     /// <typeparam name="TMessage"></typeparam>
     /// <typeparam name="TResponse"></typeparam>
     /// <returns></returns>
-    Task<TResponse?> SendStreamAsync<TMessage, TResponse>(ChannelReader<TMessage> message, CancellationToken cancellationToken)
+    Task<TResponse?> SendStreamAsync<TMessage, TResponse>(ChannelReader<TMessage> message, CancellationToken cancellationToken = default)
         where TMessage : class
         where TResponse : class;
     
@@ -47,7 +47,7 @@ public interface IMediator
     /// <typeparam name="TMessage"></typeparam>
     /// <typeparam name="TResponse"></typeparam>
     /// <returns></returns>
-    Task<TResponse?> SendAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken)
+    Task<TResponse?> SendAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken = default)
         where TMessage : class
         where TResponse : class;
 
@@ -58,6 +58,6 @@ public interface IMediator
     /// <param name="cancellationToken"></param>
     /// <typeparam name="TMessage"></typeparam>
     /// <returns></returns>
-    Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken)
+    Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken = default)
         where TMessage : class;
 }

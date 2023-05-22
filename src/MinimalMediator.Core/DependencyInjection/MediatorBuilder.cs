@@ -3,17 +3,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
 
-public interface IMediatorBuilder
-{
-    IServiceCollection Services { get; }
-
-    void UseReflection(params Type[] types);
-
-    IMediatorBuilder AddMiddleware(Type middlewareInterface, Type middlewareImplementation);
-    IMediatorBuilder AddConsumer(Type consumerInterface, Type consumerImplementation);
-    IMediatorBuilder AddReceiver(Type receiverInterface, Type receiverImplementation);
-}
-
 public sealed class MediatorBuilder : IMediatorBuilder
 {
     public MediatorBuilder(IServiceCollection services)
@@ -22,11 +11,6 @@ public sealed class MediatorBuilder : IMediatorBuilder
     }
 
     public IServiceCollection Services { get; }
-
-    public void UseReflection(params Type[] types)
-    {
-        TypeResolverReflection.Resolve(Services, types);
-    }
 
     public IMediatorBuilder AddMiddleware(Type middlewareInterface, Type middlewareImplementation)
     {

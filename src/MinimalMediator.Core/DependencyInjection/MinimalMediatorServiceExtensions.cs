@@ -11,7 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class MinimalMediatorServiceExtensions
 {
     public static IMediatorBuilder AddMinimalMediator(this IServiceCollection services,
-        Action<IMediatorBuilder>? configure,
+        Action<IMediatorBuilder>? configure = default,
         ServiceLifetime lifetime = ServiceLifetime.Singleton)
     {
         services.Add(ServiceDescriptor.Describe(typeof(IMediatorDependencyContext),

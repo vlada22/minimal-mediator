@@ -56,13 +56,44 @@ public class DependencyResolutionTests
     }
 
     [Fact]
-    public void ShouldResolveMiddlewareDependencies()
+    public void ShouldResolveMiddlewareDependenciesReflection()
     {
         var services = new ServiceCollection();
         services.AddSingleton<SharedService>();
         services.AddTransient<LifeTimeService>();
         services.AddMinimalMediator(
             config => config.UseReflection(typeof(DependencyResolutionTests)));
+        var provider = services.BuildServiceProvider();
+
+        var afterMiddleware = provider.GetRequiredService<IEnumerable<IAfterPublishMiddleware<TestMessage>>>();
+        var beforeMiddleware = provider.GetRequiredService<IEnumerable<IBeforePublishMiddleware<TestMessage>>>();
+        var exceptionMiddleware = provider.GetRequiredService<IEnumerable<IExceptionHandlerMiddleware<TestMessage>>>();
+        var consumer = provider.GetRequiredService<IEnumerable<IConsumer<TestMessage>>>();
+        var receiver = provider.GetRequiredService<IEnumerable<IReceiver<TestMessage, TestResponse>>>();
+        var receiver2 = provider.GetRequiredService<IEnumerable<IReceiverStreamAsync<TestMessage, TestResponse>>>();
+        var receiver3 = provider.GetRequiredService<IEnumerable<IReceiverStreamChannel<TestMessage, TestResponse>>>();
+        var receiver4 = provider.GetRequiredService<IEnumerable<IReceiverConsumeStreamAsync<TestMessage, TestResponse>>>();
+        var receiver5 = provider.GetRequiredService<IEnumerable<IReceiverConsumeStreamChannel<TestMessage, TestResponse>>>();
+
+        Assert.NotEmpty(afterMiddleware);
+        Assert.NotEmpty(beforeMiddleware);
+        Assert.NotEmpty(exceptionMiddleware);
+        Assert.NotEmpty(consumer);
+        Assert.NotEmpty(receiver);
+        Assert.NotEmpty(receiver2);
+        Assert.NotEmpty(receiver3);
+        Assert.NotEmpty(receiver4);
+        Assert.NotEmpty(receiver5);
+    }
+    
+    [Fact]
+    public void ShouldResolveMiddlewareDependenciesSourceGenerator()
+    {
+        var services = new ServiceCollection();
+        services.AddSingleton<SharedService>();
+        services.AddTransient<LifeTimeService>();
+        services.AddMinimalMediator(
+            config => config.UseSourceGenerator());
         var provider = services.BuildServiceProvider();
 
         var afterMiddleware = provider.GetRequiredService<IEnumerable<IAfterPublishMiddleware<TestMessage>>>();

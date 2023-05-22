@@ -1,12 +1,8 @@
 // ReSharper disable All
 namespace Microsoft.Extensions.DependencyInjection;
 
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 public class MinimalMediatorAttribute : Attribute
 {
-    public MinimalMediatorAttribute(int order)
-    {
-        Order = order;
-    }
-    
-    public int Order { get; }
+    public int Order { get; set; }
 }
