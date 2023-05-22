@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MinimalMediator.Abstractions\MinimalMediator.Abstractions.csproj" />
+      <ProjectReference Include="..\MinimalMediator.Core\MinimalMediator.Core.csproj" />
+      <ProjectReference Include="..\MinimalMediator.Reflection\MinimalMediator.Reflection.csproj" />
+      <ProjectReference Include="..\MinimalMediator.SourceGenerators\MinimalMediator.SourceGenerators.csproj" />
+    </ItemGroup>
+
+</Project>

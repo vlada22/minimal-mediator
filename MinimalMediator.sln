@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalMediator.Reflection"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalMediator.SourceGenerators", "src\MinimalMediator.SourceGenerators\MinimalMediator.SourceGenerators.csproj", "{25CB16A4-7768-41C1-99B9-40E2300C4A41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalMediator", "src\MinimalMediator\MinimalMediator.csproj", "{07D3DD4A-14C0-4B88-82DA-E0D6625984C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,7 @@ Global
 		{34E68592-AE39-4F91-B5A0-D9A2C24AA118} = {85A800F7-587C-4C48-89A8-84A989717528}
 		{EBB1FCFB-C3EB-439D-9A52-E515B1FE84AD} = {ACB43F0E-C3BC-4463-B373-6EB687F409DD}
 		{25CB16A4-7768-41C1-99B9-40E2300C4A41} = {ACB43F0E-C3BC-4463-B373-6EB687F409DD}
+		{07D3DD4A-14C0-4B88-82DA-E0D6625984C0} = {ACB43F0E-C3BC-4463-B373-6EB687F409DD}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3550C279-4D25-40CF-96CB-90FF527C1309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -56,5 +59,9 @@ Global
 		{25CB16A4-7768-41C1-99B9-40E2300C4A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25CB16A4-7768-41C1-99B9-40E2300C4A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25CB16A4-7768-41C1-99B9-40E2300C4A41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07D3DD4A-14C0-4B88-82DA-E0D6625984C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07D3DD4A-14C0-4B88-82DA-E0D6625984C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07D3DD4A-14C0-4B88-82DA-E0D6625984C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07D3DD4A-14C0-4B88-82DA-E0D6625984C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

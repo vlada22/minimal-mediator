@@ -2,4 +2,31 @@
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <!-- Nuget Packaging -->
+        <PackageId>$(MSBuildProjectName)</PackageId>
+        <Authors>vlada22</Authors>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageProjectUrl>https://github.com/vlada22/minimal-mediator</PackageProjectUrl>
+        <PackageLicenseFile>LICENSE</PackageLicenseFile>
+        <PackageIcon>logo.png</PackageIcon>
+        <RepositoryUrl>https://github.com/vlada22/minimal-mediator</RepositoryUrl>
+        <Keywords>dotnet;mediator;streams-api;minimal-api;source-generated;native-aot;minimal-mediator;minimal;api;vlada22</Keywords>
+        <Description>Minimal Mediator Implementation with Streaming and native AOT support</Description>
+        <PackageTags>dotnet;mediator;streams-api;minimal-api;source-generated;native-aot;minimal-mediator;minimal;api;vlada22</PackageTags>
+        <RepositoryType>git</RepositoryType>
+        <Copyright>Copyright 2023 vlada22</Copyright>
+
+        <EnablePackageValidation>true</EnablePackageValidation>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
+    </PropertyGroup>
+
+    <!-- add license and icon to nuget packages -->
+    <ItemGroup>
+        <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath=""/>
+        <None Include="$(MSBuildThisFileDirectory)logo.png" Pack="true" PackagePath=""/>
+        <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath=""/>
+    </ItemGroup>
 </Project>
