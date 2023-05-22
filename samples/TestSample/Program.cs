@@ -15,10 +15,10 @@ builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IAfterPubli
 builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IConsumer<TestContext>), typeof(Consumer1)));
 builder.Services.TryAddEnumerable(ServiceDescriptor.Transient(typeof(IConsumer<TestContext>), typeof(Consumer2)));
 builder.Services.AddTransient(typeof(IReceiver<TestContext, TestResponse>), typeof(Sender1));
-builder.Services.AddTransient(typeof(IReceiverStream<TestContext, TestResponse>), typeof(Sender2));
+builder.Services.AddTransient(typeof(IReceiverStreamChannel<TestContext, TestResponse>), typeof(Sender2));
 builder.Services.AddTransient(typeof(IReceiverStreamAsync<TestContext, TestResponse>), typeof(Sender3));
 
-builder.Services.AddMinimalMediator(ServiceLifetime.Scoped);
+builder.Services.AddMinimalMediator( c=>c.UseReflection(),ServiceLifetime.Scoped);
 
 builder.Services.AddHostedService<Worker>();
 

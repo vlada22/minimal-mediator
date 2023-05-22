@@ -7,7 +7,7 @@ namespace MinimalMediator.Core.Messaging;
 /// </summary>
 /// <typeparam name="TMessage"></typeparam>
 /// <typeparam name="TResponse"></typeparam>
-public interface IReceiverStream<TMessage, TResponse>
+public interface IReceiverStreamChannel<TMessage, TResponse>
     where TMessage : class
     where TResponse : class
 {
@@ -18,12 +18,4 @@ public interface IReceiverStream<TMessage, TResponse>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<TResponse?> ReceiveAsync(ChannelReader<TMessage> reader, CancellationToken cancellationToken);
-    
-    /// <summary>
-    /// Handles stream of <see cref="Channel{T}"/> messages.
-    /// </summary>
-    /// <param name="message"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<ChannelReader<TResponse>> ReceiveAsync(TMessage message, CancellationToken cancellationToken);
 }

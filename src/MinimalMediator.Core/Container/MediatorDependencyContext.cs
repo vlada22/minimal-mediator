@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MinimalMediator.Core.DependencyInjection;
+namespace MinimalMediator.Core.Container;
 
 public interface IMediatorDependencyContext : IAsyncDisposable
 {

@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MinimalMediator.Abstractions.Context;
 using MinimalMediator.Abstractions.Middleware;
 using MinimalMediator.Abstractions.Pipeline;
-using MinimalMediator.Core.DependencyInjection;
+using MinimalMediator.Core.Container;
 
 namespace MinimalMediator.Core.Pipe;
 

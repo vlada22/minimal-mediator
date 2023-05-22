@@ -19,7 +19,7 @@ public class Sender1 : IReceiver<TestContext, TestResponse>
     }
 }
 
-public class Sender2 : IReceiverStream<TestContext, TestResponse>
+public class Sender2 : IReceiverStreamChannel<TestContext, TestResponse>
 {
     private readonly ILogger<Sender2> _logger;
 
@@ -36,6 +36,11 @@ public class Sender2 : IReceiverStream<TestContext, TestResponse>
             _logger.LogInformation("Sender2: {Message}", item);
         }
         return new TestResponse("Hello World!");
+    }
+
+    public Task<ChannelReader<TestResponse>> ReceiveAsync(TestContext message, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
     }
 }
 
@@ -55,5 +60,10 @@ public class Sender3 : IReceiverStreamAsync<TestContext, TestResponse>
             _logger.LogInformation("Sender3: {Message}", item);
         }
         return new TestResponse("Hello World!");
+    }
+
+    public Task<IAsyncEnumerable<TestResponse>> ReceiveAsync(TestContext message, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
     }
 }

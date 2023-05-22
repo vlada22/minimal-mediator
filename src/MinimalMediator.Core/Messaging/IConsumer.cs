@@ -1,4 +1,3 @@
-using MinimalMediator.Abstractions.Context;
 using MinimalMediator.Core.Context;
 
 namespace MinimalMediator.Core.Messaging;

@@ -4,7 +4,7 @@ using MinimalMediator.Core.Messaging;
 
 namespace MinimalMediator.Core.Middleware;
 
-public class PublishMiddlewareDefault<TMessage> : IPublishMiddleware<TMessage>
+internal class PublishMiddlewareDefault<TMessage> : IPublishMiddleware<TMessage>
     where TMessage : class
 {
     private readonly IEnumerable<IConsumer<TMessage>> _consumers;

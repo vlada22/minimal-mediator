@@ -16,12 +16,4 @@ public interface IReceiverStreamAsync<in TMessage, TResponse>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<TResponse?> ReceiveAsync(IAsyncEnumerable<TMessage> stream, CancellationToken cancellationToken);
-    
-    /// <summary>
-    /// Handles stream of <see cref="IAsyncEnumerable{T}"/> messages.
-    /// </summary>
-    /// <param name="message"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    Task<IAsyncEnumerable<TResponse>> ReceiveAsync(TMessage message, CancellationToken cancellationToken);
 }

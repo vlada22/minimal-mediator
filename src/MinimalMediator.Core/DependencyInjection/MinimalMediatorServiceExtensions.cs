@@ -1,7 +1,7 @@
 using MinimalMediator.Abstractions;
 using MinimalMediator.Abstractions.Pipeline;
 using MinimalMediator.Core;
-using MinimalMediator.Core.DependencyInjection;
+using MinimalMediator.Core.Container;
 using MinimalMediator.Core.Middleware;
 using MinimalMediator.Core.Pipe;
 
@@ -10,7 +10,8 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class MinimalMediatorServiceExtensions
 {
-    public static IServiceCollection AddMinimalMediator(this IServiceCollection services,
+    public static IMediatorBuilder AddMinimalMediator(this IServiceCollection services,
+        Action<IMediatorBuilder>? configure,
         ServiceLifetime lifetime = ServiceLifetime.Singleton)
     {
         services.Add(ServiceDescriptor.Describe(typeof(IMediatorDependencyContext),
@@ -26,6 +27,8 @@ public static class MinimalMediatorServiceExtensions
 
         services.Add(ServiceDescriptor.Describe(typeof(IMediator), typeof(MediatorDefault), lifetime));
 
-        return services;
+        var builder = new MediatorBuilder(services);
+        configure?.Invoke(builder);
+        return builder;
     }
 }

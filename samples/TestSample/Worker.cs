@@ -1,4 +1,3 @@
-using System.Threading.Channels;
 using MinimalMediator.Abstractions;
 
 namespace TestSample;

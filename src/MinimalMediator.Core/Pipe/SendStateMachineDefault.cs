@@ -1,7 +1,7 @@
 using System.Threading.Channels;
 using Microsoft.Extensions.DependencyInjection;
 using MinimalMediator.Abstractions.Pipeline;
-using MinimalMediator.Core.DependencyInjection;
+using MinimalMediator.Core.Container;
 using MinimalMediator.Core.Messaging;
 
 namespace MinimalMediator.Core.Pipe;
@@ -17,16 +17,16 @@ public class SendStateMachineDefault<TMessage, TResponse> : ISendStateMachine<TM
         _dependencyContext = dependencyContext;
     }
 
-    public Task<IAsyncEnumerable<TResponse>> ProcessStreamAsync(TMessage message, CancellationToken cancellationToken)
+    public IAsyncEnumerable<TResponse> ProcessStreamAsync(TMessage message, CancellationToken cancellationToken)
     {
-        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverStreamAsync<TMessage, TResponse>>();
+        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverConsumeStreamAsync<TMessage, TResponse>>();
         
         return consumer.ReceiveAsync(message, cancellationToken);
     }
 
     public Task<ChannelReader<TResponse>> ProcessChannelStreamAsync(TMessage message, CancellationToken cancellationToken)
     {
-        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverStream<TMessage, TResponse>>();
+        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverConsumeStreamChannel<TMessage, TResponse>>();
         
         return consumer.ReceiveAsync(message, cancellationToken);
     }
@@ -40,7 +40,7 @@ public class SendStateMachineDefault<TMessage, TResponse> : ISendStateMachine<TM
 
     public Task<TResponse?> ProcessAsync(ChannelReader<TMessage> reader, CancellationToken cancellationToken)
     {
-        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverStream<TMessage, TResponse>>();
+        var consumer = _dependencyContext.ActivationServices.GetRequiredService<IReceiverStreamChannel<TMessage, TResponse>>();
         
         return consumer.ReceiveAsync(reader, cancellationToken);
     }

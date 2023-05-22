@@ -3,10 +3,7 @@ using System.Threading.Channels;
 using Microsoft.Extensions.DependencyInjection;
 using MinimalMediator.Abstractions;
 using MinimalMediator.Abstractions.Pipeline;
-using MinimalMediator.Core.Context;
-using MinimalMediator.Core.DependencyInjection;
-using MinimalMediator.Core.Middleware;
-using MinimalMediator.Core.Pipe;
+using MinimalMediator.Core.Container;
 
 namespace MinimalMediator.Core;
 
@@ -20,7 +17,7 @@ public sealed class MediatorDefault : IMediator
         _dependencyContext = dependencyContext;
     }
 
-    public Task<IAsyncEnumerable<TResponse>> ReceiveStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken) where TMessage : class where TResponse : class
+    public IAsyncEnumerable<TResponse> ReceiveStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken) where TMessage : class where TResponse : class
     {
         var stateMachine = _dependencyContext.ActivationServices
             .GetRequiredService<ISendStateMachine<TMessage, TResponse>>();

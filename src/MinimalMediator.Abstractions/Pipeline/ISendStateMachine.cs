@@ -17,7 +17,7 @@ public interface ISendStateMachine<TMessage, TResponse>
     /// <param name="message"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<IAsyncEnumerable<TResponse>> ProcessStreamAsync(TMessage message, CancellationToken cancellationToken);
+    IAsyncEnumerable<TResponse> ProcessStreamAsync(TMessage message, CancellationToken cancellationToken);
 
     /// <summary>
     /// Process <see cref="ChannelReader{T}"/> stream asynchronously.

@@ -7,7 +7,7 @@ namespace MinimalMediator.Core.Middleware;
 /// Middleware that publishes a message.
 /// </summary>
 /// <typeparam name="TMessage"></typeparam>
-public interface IPublishMiddleware<TMessage> : IMiddleware<PublishMiddlewareContext<TMessage>, TMessage>
+internal interface IPublishMiddleware<TMessage> : IMiddleware<PublishMiddlewareContext<TMessage>, TMessage>
     where TMessage : class
 {
     
