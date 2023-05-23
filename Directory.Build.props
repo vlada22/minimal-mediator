@@ -13,7 +13,7 @@
         <PackageIcon>logo.png</PackageIcon>
         <RepositoryUrl>https://github.com/vlada22/minimal-mediator</RepositoryUrl>
         <Keywords>dotnet;mediator;streams-api;minimal-api;source-generated;native-aot;minimal-mediator;minimal;api;vlada22</Keywords>
-        <Description>Minimal Mediator Implementation with Streaming and native AOT support</Description>
+        <Description>Minimal Mediator Implementation with Streaming and Native AOT support</Description>
         <PackageTags>dotnet;mediator;streams-api;minimal-api;source-generated;native-aot;minimal-mediator;minimal;api;vlada22</PackageTags>
         <RepositoryType>git</RepositoryType>
         <Copyright>Copyright 2023 vlada22</Copyright>

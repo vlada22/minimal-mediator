@@ -1,51 +1,94 @@
+using System.Threading.Channels;
 using MinimalMediator.Abstractions;
 
 namespace TestSample;
 
 public class Worker : BackgroundService
 {
+    private ILogger<Worker> _logger;
     private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<Worker> _logger;
 
-    public Worker(IServiceProvider serviceProvider, ILogger<Worker> logger)
+    public Worker(ILogger<Worker> logger, IServiceProvider serviceProvider)
     {
-        _serviceProvider = serviceProvider;
         _logger = logger;
+        _serviceProvider = serviceProvider;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await using var scope = _serviceProvider.CreateAsyncScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-
-        //await mediator.PublishAsync(new TestContext("Test"), stoppingToken);
-
-        //var data = await mediator.SendAsync<TestContext, TestResponse>(new TestContext("test"), stoppingToken);
-        //_logger.LogInformation("Data: {Data}", data);
-
-        // var channel = Channel.CreateUnbounded<TestContext>();
-        // _ = Task.Factory.StartNew(async () =>
-        // {
-        //     for (int i = 0; i < 5; i++)
-        //     {
-        //         await channel.Writer.WriteAsync(new TestContext($"test {i}"), stoppingToken);
-        //     }
-        // }, stoppingToken);
-
-        //var data2 = await mediator.SendStreamAsync<TestContext, TestResponse>(channel.Reader, stoppingToken);
-        //_logger.LogInformation("Data: {Data}", data2);
         
-        async IAsyncEnumerable<TestContext> StreamData()
+        await Publish(mediator);
+        await SendMessage(mediator);
+        await SendStream(mediator);
+        await ReceiveStream(mediator);
+    }
+    
+    private async Task Publish(IMediator mediator)
+    {
+        await mediator.PublishAsync(new TestMessage("Hello World!"));
+    }
+
+    private async Task SendMessage(IMediator mediator)
+    {
+       var response = await mediator.SendAsync<TestMessage, TestResponse>(new TestMessage("Hello World!"));
+         _logger.LogInformation("Response: {Response}", response);
+    }
+
+    private async Task SendStream(IMediator mediator)
+    {
+        // IAsyncEnumerable
+        async IAsyncEnumerable<TestMessage> StreamAsync()
         {
-            for (var i = 0; i < 5; i++)
+            for (var i = 0; i < 10; i++)
             {
-                var data = new TestContext($"async stream {i}");
-                await Task.Delay(1, stoppingToken);
-                yield return data;
+                yield return new TestMessage($"Hello World! {i}");
+                await Task.Delay(1);
             }
         }
         
-        var data3 = await mediator.SendStreamAsync<TestContext, TestResponse>(StreamData(), stoppingToken);
-        _logger.LogInformation("Data: {Data}", data3);
+        var response = await mediator.SendStreamAsync<TestMessage, TestResponse>(StreamAsync());
+        
+        _logger.LogInformation("Response from IAsyncEnumerable: {Response}", response);
+        
+        
+        // ChannelReader
+        var channel = Channel.CreateUnbounded<TestMessage>();
+        
+        _ = Task.Run(async () =>
+        {
+            for (var i = 0; i < 10; i++)
+            {
+                await channel.Writer.WriteAsync(new TestMessage($"Hello World! {i}"));
+                await Task.Delay(1);
+            }
+            
+            channel.Writer.Complete();
+        });
+        
+        response = await mediator.SendStreamAsync<TestMessage, TestResponse>(channel.Reader);
+        
+        _logger.LogInformation("Response from ChannelReader: {Response}", response);
+    }
+
+    private async Task ReceiveStream(IMediator mediator)
+    {
+        // IAsyncEnumerable
+        var asyncStream = mediator.ReceiveStreamAsync<TestMessage, TestResponse>(new TestMessage("Hello World!"));
+        await foreach (var item in asyncStream)
+        {
+            _logger.LogInformation("ReceiveStreamAsync message: {Message}", item);
+        }
+        
+        // ChannelReader
+        var channelStream = await mediator.ReceiveChannelStreamAsync<TestMessage,TestResponse>(new TestMessage("Hello World!"));
+        while (await channelStream.WaitToReadAsync())
+        {
+            while (channelStream.TryRead(out var item))
+            {
+                _logger.LogInformation("ReceiveChannelStreamAsync message: {Message}", item);
+            }
+        }
     }
 }

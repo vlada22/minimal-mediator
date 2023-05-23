@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class MinimalMediatorSourceGeneratorExtensions
 {
-    public static IMediatorBuilder UseSourceGenerator(this IMediatorBuilder builder)
+    public static IDependencyMediatorBuilder UseSourceGenerator(this IDependencyMediatorBuilder builder)
     {
 ");
         foreach (var service in classes.ToList().OrderBy(x => x?.Order ?? 0))

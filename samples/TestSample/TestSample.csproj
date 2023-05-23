@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\MinimalMediator.Core\MinimalMediator.Core.csproj" />
       <ProjectReference Include="..\..\src\MinimalMediator.Reflection\MinimalMediator.Reflection.csproj" />
+      <ProjectReference Include="..\..\src\MinimalMediator.SourceGenerators\MinimalMediator.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
 </Project>

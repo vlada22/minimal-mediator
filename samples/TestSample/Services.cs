@@ -1,23 +1,11 @@
 namespace TestSample;
 
-public class ServicesB
+public class TransientService
 {
-    private readonly ServicesC _service;
-
-    public ServicesB(ServicesC service)
-    {
-        _service = service;
-    }
-    
-    public string Get()
-    {
-        return Name;
-    }
-
-    public string Name { get; set; } = Guid.NewGuid().ToString();
+    public string Id { get; } = Guid.NewGuid().ToString();
 }
 
-public class ServicesC
+public class ScopedService
 {
-    public string Name { get; set; } = "ServicesC";
+    public string Id { get; } = Guid.NewGuid().ToString();
 }

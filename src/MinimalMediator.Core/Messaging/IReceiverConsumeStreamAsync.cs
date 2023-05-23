@@ -1,6 +1,6 @@
 namespace MinimalMediator.Core.Messaging;
 
-public interface IReceiverConsumeStreamAsync<in TMessage, TResult>
+public interface IReceiverConsumeStreamAsync<in TMessage, out TResult>
     where TMessage : class
     where TResult : class
 {
