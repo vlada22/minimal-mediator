@@ -61,8 +61,8 @@ jobs:
       - name: dotnet build and publish
         run: |
           dotnet restore
-          dotnet build --configuration '${{ env.BUILD_CONFIGURATION }}' /p:PublicRelease=true /p:Version=$NBGV_NuGetPackageVersion
-          dotnet pack -c '${{ env.BUILD_CONFIGURATION }}' -o ./artifacts /p:PublicRelease=true /p:Version=$NBGV_NuGetPackageVersion
+          dotnet build --configuration '${{ env.BUILD_CONFIGURATION }}' /p:Version=$NBGV_NuGetPackageVersion
+          dotnet pack -c '${{ env.BUILD_CONFIGURATION }}' -o ./artifacts /p:Version=$NBGV_NuGetPackageVersion
       # Publish the package to Azure Artifacts
       - name: 'dotnet publish'
         run: dotnet nuget push ./artifacts/**.nupkg --source ${{ env.FEED_URL }} --api-key ${{ secrets.FEED_PAT }}

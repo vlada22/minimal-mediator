@@ -7,9 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Condition="'$(TargetFramework)'=='netstandard2.0'" Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0-preview.4.23259.5" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-      <PackageReference Condition="'$(TargetFramework)'=='netstandard2.0'" Include="System.Threading.Channels" Version="8.0.0-preview.4.23259.5" />
+      <PackageReference Condition="'$(TargetFramework)'=='netstandard2.0'" Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0-preview.7.23375.6" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.7.23375.6" />
+      <PackageReference Condition="'$(TargetFramework)'=='netstandard2.0'" Include="System.Threading.Channels" Version="8.0.0-preview.7.23375.6" />
     </ItemGroup>
 
     <ItemGroup>
