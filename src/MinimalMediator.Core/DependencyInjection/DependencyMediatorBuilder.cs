@@ -42,7 +42,3 @@ public sealed class DependencyMediatorBuilder : IDependencyMediatorBuilder
         return this;
     }
 }
-
-#if NETSTANDARD2_0
-
-#endif

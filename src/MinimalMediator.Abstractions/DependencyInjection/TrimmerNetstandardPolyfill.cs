@@ -1,6 +1,4 @@
-﻿#if NETSTANDARD2_0
-
-// ReSharper disable CheckNamespace
+﻿// ReSharper disable CheckNamespace
 namespace System.Diagnostics.CodeAnalysis.Polyfill
 {
     [Flags]
@@ -112,4 +110,3 @@ public
         public DynamicallyAccessedMemberTypes MemberTypes { get; }
     }
 }
-#endif
