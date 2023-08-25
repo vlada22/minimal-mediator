@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalMediator.SourceGener
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalMediator", "src\MinimalMediator\MinimalMediator.csproj", "{07D3DD4A-14C0-4B88-82DA-E0D6625984C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSampleAot", "samples\TestSampleAot\TestSampleAot.csproj", "{26D12BE2-8D6D-4606-88F6-2D92449CB9F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,7 @@ Global
 		{EBB1FCFB-C3EB-439D-9A52-E515B1FE84AD} = {ACB43F0E-C3BC-4463-B373-6EB687F409DD}
 		{25CB16A4-7768-41C1-99B9-40E2300C4A41} = {ACB43F0E-C3BC-4463-B373-6EB687F409DD}
 		{07D3DD4A-14C0-4B88-82DA-E0D6625984C0} = {ACB43F0E-C3BC-4463-B373-6EB687F409DD}
+		{26D12BE2-8D6D-4606-88F6-2D92449CB9F7} = {16871E69-A8B8-4860-A0FD-72E50875A369}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{3550C279-4D25-40CF-96CB-90FF527C1309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -63,5 +66,9 @@ Global
 		{07D3DD4A-14C0-4B88-82DA-E0D6625984C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07D3DD4A-14C0-4B88-82DA-E0D6625984C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07D3DD4A-14C0-4B88-82DA-E0D6625984C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26D12BE2-8D6D-4606-88F6-2D92449CB9F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26D12BE2-8D6D-4606-88F6-2D92449CB9F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26D12BE2-8D6D-4606-88F6-2D92449CB9F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26D12BE2-8D6D-4606-88F6-2D92449CB9F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
