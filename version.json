@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/main/src/NerdBank.GitVersioning/version.schema.json",
-  "version": "1.6-rc.2",
+  "version": "1.6",
   "publicReleaseRefSpec": [
-    "^refs/heads/main$",
+    "^refs/heads/release$",
     "^refs/tags/v\\d+\\.\\d+"
   ],
   "cloudBuild": {
@@ -16,6 +16,7 @@
     }
   },
   "release" : {
+    "tagName" : "v{version}",
     "branchName" : "v{version}",
     "versionIncrement" : "minor",
     "firstUnstableTag" : "alpha"
