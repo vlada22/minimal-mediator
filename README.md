@@ -95,17 +95,13 @@ Minimal Mediator supports sending and receiving messages and streams. The functi
 `See the sample project and tests for more details.`
 
 ### Service Lifetime
-The predefined lifetime of the **Publish/Subscribe** and **Request/Response** invocations is **Transient**. This behavior cannot be changed.
-
 The default lifetime of the **IMediator** service is **Singleton**. There is also a **Scoped** lifetime available that can be enabled from the configuration.
 
 ```csharp
 builder.Services.AddMinimalMediator(config => config.UseSourceGenerator(), ServiceLifetime.Scoped);
 ```
 
-The mediator will be registered as **Scoped** but the invocations will still be **Transient**.
-
-In addition, when using the **Scoped** lifetime, the mediator creates a new scope for each invocation.
+When **IMediator** registered as **Scoped** lifetime, the mediator creates/manages its own scope that has the same lifetime as the **IMediator** instance.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
