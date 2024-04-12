@@ -6,21 +6,14 @@ using MinimalMediator.Core.Container;
 
 namespace MinimalMediator.Core.Pipe;
 
-public class PipeBuilder : IPipeBuilder
+internal class PipeBuilder(IMediatorDependencyContext dependencyContext) : IPipeBuilder
 {
-    private readonly IMediatorDependencyContext _dependencyContext;
-
-    public PipeBuilder(IMediatorDependencyContext dependencyContext)
-    {
-        _dependencyContext = dependencyContext;
-    }
-
     public IPipe<TContext, TMessage> Build<TMiddleware, TContext, TMessage>()
         where TMiddleware : class, IMiddleware<TContext, TMessage>
         where TContext : class, IPipeContext<TMessage>
         where TMessage : class
     {
-        var middlewares = _dependencyContext.ActivationServices.GetServices<TMiddleware>()
+        var middlewares = dependencyContext.ActivationServices.GetServices<TMiddleware>()
             .ToList();
 
         IPipe<TContext, TMessage> next = FirstPipe<TContext, TMessage>.Empty;

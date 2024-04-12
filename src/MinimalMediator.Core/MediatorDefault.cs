@@ -6,18 +6,11 @@ using MinimalMediator.Core.Container;
 
 namespace MinimalMediator.Core;
 
-public sealed class MediatorDefault : IMediator
+internal sealed class MediatorDefault(IMediatorDependencyContext dependencyContext) : IMediator
 {
-    private readonly IMediatorDependencyContext _dependencyContext;
-
-    public MediatorDefault(IMediatorDependencyContext dependencyContext)
-    {
-        _dependencyContext = dependencyContext;
-    }
-
     public IAsyncEnumerable<TResponse> ReceiveStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken = default) where TMessage : class where TResponse : class
     {
-        var stateMachine = _dependencyContext.ActivationServices
+        var stateMachine = dependencyContext.ActivationServices
             .GetRequiredService<ISendStateMachine<TMessage, TResponse>>();
 
         return stateMachine.ProcessStreamAsync(message, cancellationToken);
@@ -25,7 +18,7 @@ public sealed class MediatorDefault : IMediator
 
     public Task<ChannelReader<TResponse>> ReceiveChannelStreamAsync<TMessage, TResponse>(TMessage message, CancellationToken cancellationToken = default) where TMessage : class where TResponse : class
     {
-        var stateMachine = _dependencyContext.ActivationServices
+        var stateMachine = dependencyContext.ActivationServices
             .GetRequiredService<ISendStateMachine<TMessage, TResponse>>();
 
         return stateMachine.ProcessChannelStreamAsync(message, cancellationToken);
@@ -33,7 +26,7 @@ public sealed class MediatorDefault : IMediator
 
     public Task<TResponse?> SendStreamAsync<TMessage, TResponse>(IAsyncEnumerable<TMessage> message, CancellationToken cancellationToken = default) where TMessage : class where TResponse : class
     {
-        var stateMachine = _dependencyContext.ActivationServices
+        var stateMachine = dependencyContext.ActivationServices
             .GetRequiredService<ISendStateMachine<TMessage, TResponse>>();
 
         return stateMachine.ProcessAsync(message, cancellationToken);
@@ -41,7 +34,7 @@ public sealed class MediatorDefault : IMediator
 
     public Task<TResponse?> SendStreamAsync<TMessage, TResponse>(ChannelReader<TMessage> message, CancellationToken cancellationToken = default) where TMessage : class where TResponse : class
     {
-        var stateMachine = _dependencyContext.ActivationServices
+        var stateMachine = dependencyContext.ActivationServices
             .GetRequiredService<ISendStateMachine<TMessage, TResponse>>();
 
         return stateMachine.ProcessAsync(message, cancellationToken);
@@ -51,7 +44,7 @@ public sealed class MediatorDefault : IMediator
         where TMessage : class 
         where TResponse : class
     {
-        var stateMachine = _dependencyContext.ActivationServices
+        var stateMachine = dependencyContext.ActivationServices
             .GetRequiredService<ISendStateMachine<TMessage, TResponse>>();
 
         return stateMachine.ProcessAsync(message, cancellationToken);
@@ -60,7 +53,7 @@ public sealed class MediatorDefault : IMediator
     public Task PublishAsync<TMessage>(TMessage message, CancellationToken cancellationToken = default) 
         where TMessage : class
     {
-        var stateMachine = _dependencyContext.ActivationServices
+        var stateMachine = dependencyContext.ActivationServices
             .GetRequiredService<IPublishStateMachine<TMessage>>();
 
         return stateMachine.ProcessAsync(message, cancellationToken);

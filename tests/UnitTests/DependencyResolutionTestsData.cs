@@ -61,253 +61,157 @@ public class SharedService
     }
 }
 
-public class BeforeMiddleware1 : IBeforePublishMiddleware<TestMessage>
+public class BeforeMiddleware1(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IBeforePublishMiddleware<TestMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public BeforeMiddleware1(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-
     public Task InvokeAsync(PreProcessMiddlewareContext<TestMessage> context, IPipe<PreProcessMiddlewareContext<TestMessage>, TestMessage> next, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("BeforeMiddleware1");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("BeforeMiddleware1");
+        sharedService.AddId(lifeTimeService.Id);
         
         return next.InvokeAsync(context, cancellationToken);
     }
 }
 
-public class BeforeMiddleware2 : IBeforePublishMiddleware<TestMessage>
+public class BeforeMiddleware2(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IBeforePublishMiddleware<TestMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public BeforeMiddleware2(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task InvokeAsync(PreProcessMiddlewareContext<TestMessage> context, IPipe<PreProcessMiddlewareContext<TestMessage>, TestMessage> next, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("BeforeMiddleware2");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("BeforeMiddleware2");
+        sharedService.AddId(lifeTimeService.Id);
         
         return next.InvokeAsync(context, cancellationToken);
     }
 }
     
-public class AfterMiddleware1 : IAfterPublishMiddleware<TestMessage>
+public class AfterMiddleware1(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IAfterPublishMiddleware<TestMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public AfterMiddleware1(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task InvokeAsync(PostProcessMiddlewareContext<TestMessage> context, IPipe<PostProcessMiddlewareContext<TestMessage>, TestMessage> next, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("AfterMiddleware1");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("AfterMiddleware1");
+        sharedService.AddId(lifeTimeService.Id);
         
         return next.InvokeAsync(context, cancellationToken);
     }
 }
 
-public class AfterMiddleware2 : IAfterPublishMiddleware<TestMessage>
+public class AfterMiddleware2(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IAfterPublishMiddleware<TestMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public AfterMiddleware2(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task InvokeAsync(PostProcessMiddlewareContext<TestMessage> context, IPipe<PostProcessMiddlewareContext<TestMessage>, TestMessage> next, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("AfterMiddleware2");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("AfterMiddleware2");
+        sharedService.AddId(lifeTimeService.Id);
 
         return next.InvokeAsync(context, cancellationToken);
     }
 }
 
-public class ExceptionMiddleware : IExceptionHandlerMiddleware<TestMessage>
+public class ExceptionMiddleware(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IExceptionHandlerMiddleware<TestMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ExceptionMiddleware(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task InvokeAsync(ExceptionHandlerMiddlewareContext<TestMessage> context, IPipe<ExceptionHandlerMiddlewareContext<TestMessage>, TestMessage> next, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ExceptionMiddleware");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ExceptionMiddleware");
+        sharedService.AddId(lifeTimeService.Id);
 
         return next.InvokeAsync(context, cancellationToken);
     }
 }
 
-public class Consumer1 : IConsumer<TestMessage>
+public class Consumer1(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IConsumer<TestMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public Consumer1(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task HandleAsync(PublishMiddlewareContext<TestMessage> context, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("Consumer1");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("Consumer1");
+        sharedService.AddId(lifeTimeService.Id);
         
         return Task.CompletedTask;
     }
 }
 
-public class Consumer2 : IConsumer<TestMessage>
+public class Consumer2(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IConsumer<TestMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public Consumer2(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task HandleAsync(PublishMiddlewareContext<TestMessage> context, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("Consumer2");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("Consumer2");
+        sharedService.AddId(lifeTimeService.Id);
         
         return Task.CompletedTask;
     }
 }
 
-public class Receiver1 : IReceiver<TestMessage, TestResponse>
+public class Receiver1(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiver<TestMessage, TestResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public Receiver1(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task<TestResponse?> ReceiveAsync(TestMessage message, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("Receiver1");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("Receiver1");
+        sharedService.AddId(lifeTimeService.Id);
         
         return Task.FromResult<TestResponse?>(null);
     }
 }
 
-public class Receiver2 : IReceiverStreamAsync<TestMessage, TestResponse>
+public class Receiver2(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiverStreamAsync<TestMessage, TestResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public Receiver2(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task<TestResponse?> ReceiveAsync(IAsyncEnumerable<TestMessage> stream, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("Receiver2");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("Receiver2");
+        sharedService.AddId(lifeTimeService.Id);
         
         return Task.FromResult<TestResponse?>(null);
     }
 }
 
-public class Receiver3 : IReceiverStreamChannel<TestMessage, TestResponse>
+public class Receiver3(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiverStreamChannel<TestMessage, TestResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public Receiver3(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task<TestResponse?> ReceiveAsync(ChannelReader<TestMessage> reader, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("Receiver3");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("Receiver3");
+        sharedService.AddId(lifeTimeService.Id);
         
         return Task.FromResult<TestResponse?>(null);
     }
 }
 
-public class Receiver4 : IReceiverConsumeStreamChannel<TestMessage, TestResponse>
+public class Receiver4(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiverConsumeStreamChannel<TestMessage, TestResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public Receiver4(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task<ChannelReader<TestResponse>> ReceiveAsync(TestMessage message, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("Receiver4");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("Receiver4");
+        sharedService.AddId(lifeTimeService.Id);
         
         return Task.FromResult<ChannelReader<TestResponse>>(null!);
     }
 }
 
-public class Receiver5 : IReceiverConsumeStreamAsync<TestMessage, TestResponse>
+public class Receiver5(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiverConsumeStreamAsync<TestMessage, TestResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public Receiver5(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public IAsyncEnumerable<TestResponse> ReceiveAsync(TestMessage message, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("Receiver5");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("Receiver5");
+        sharedService.AddId(lifeTimeService.Id);
 
         return null!;
     }

@@ -6,76 +6,52 @@ namespace UnitTests;
 public record ReceiverMessage(string Message);
 public record ReceiverResponse(string Message);
 
-public class ReceiverTest : IReceiver<ReceiverMessage, ReceiverResponse>
+public class ReceiverTest(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiver<ReceiverMessage, ReceiverResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ReceiverTest(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task<ReceiverResponse?> ReceiveAsync(ReceiverMessage message, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ReceiverTest");
-        _sharedService.AddId(_lifeTimeService.Id);
-        _sharedService.AddHandlerData(message);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ReceiverTest");
+        sharedService.AddId(lifeTimeService.Id);
+        sharedService.AddHandlerData(message);
         
         return Task.FromResult<ReceiverResponse?>(new ReceiverResponse(message.Message));
     }
 }
 
-public class ReceiverStream : IReceiverStreamAsync<ReceiverMessage, ReceiverResponse>
+public class ReceiverStream(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiverStreamAsync<ReceiverMessage, ReceiverResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ReceiverStream(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public async Task<ReceiverResponse?> ReceiveAsync(IAsyncEnumerable<ReceiverMessage> stream, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ReceiverStream");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ReceiverStream");
+        sharedService.AddId(lifeTimeService.Id);
 
         await foreach (var item in stream.WithCancellation(cancellationToken))
         {
-            _sharedService.AddHandlerData(item);
+            sharedService.AddHandlerData(item);
         }
 
         return default;
     }
 }
 
-public class ReceiverStreamChannel : IReceiverStreamChannel<ReceiverMessage, ReceiverResponse>
+public class ReceiverStreamChannel(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiverStreamChannel<ReceiverMessage, ReceiverResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ReceiverStreamChannel(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public async Task<ReceiverResponse?> ReceiveAsync(ChannelReader<ReceiverMessage> reader, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ReceiverStreamChannel");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ReceiverStreamChannel");
+        sharedService.AddId(lifeTimeService.Id);
         
         while (await reader.WaitToReadAsync(cancellationToken))
         {
             while (reader.TryRead(out var item))
             {
-                _sharedService.AddHandlerData(item);
+                sharedService.AddHandlerData(item);
             }
         }
 
@@ -83,24 +59,16 @@ public class ReceiverStreamChannel : IReceiverStreamChannel<ReceiverMessage, Rec
     }
 }
 
-public class ReceiverConsumeStream : IReceiverConsumeStreamAsync<ReceiverMessage, ReceiverResponse>
+public class ReceiverConsumeStream(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiverConsumeStreamAsync<ReceiverMessage, ReceiverResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ReceiverConsumeStream(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-
     public IAsyncEnumerable<ReceiverResponse> ReceiveAsync(ReceiverMessage message,
         CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ReceiverConsumeStream");
-        _sharedService.AddId(_lifeTimeService.Id);
-        _sharedService.AddHandlerData(message);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ReceiverConsumeStream");
+        sharedService.AddId(lifeTimeService.Id);
+        sharedService.AddHandlerData(message);
 
         async IAsyncEnumerable<ReceiverResponse> Stream()
         {
@@ -115,23 +83,15 @@ public class ReceiverConsumeStream : IReceiverConsumeStreamAsync<ReceiverMessage
     }
 }
 
-public class ReceiverConsumeChannel : IReceiverConsumeStreamChannel<ReceiverMessage, ReceiverResponse>
+public class ReceiverConsumeChannel(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IReceiverConsumeStreamChannel<ReceiverMessage, ReceiverResponse>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ReceiverConsumeChannel(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task<ChannelReader<ReceiverResponse>> ReceiveAsync(ReceiverMessage message, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ReceiverConsumeChannel");
-        _sharedService.AddId(_lifeTimeService.Id);
-        _sharedService.AddHandlerData(message);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ReceiverConsumeChannel");
+        sharedService.AddId(lifeTimeService.Id);
+        sharedService.AddHandlerData(message);
 
         var channel = Channel.CreateUnbounded<ReceiverResponse>();
 

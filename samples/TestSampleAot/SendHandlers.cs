@@ -3,40 +3,25 @@ using MinimalMediator.Core.Messaging;
 
 namespace TestSampleAot;
 
-public class ReceiverTest : IReceiver<TestMessage, TestResponse>
+public class ReceiverTest(TransientService transientService, ILogger<ReceiverTest> logger)
+    : IReceiver<TestMessage, TestResponse>
 {
-    private readonly TransientService _transientService;
-    private readonly ILogger<ReceiverTest> _logger;
-
-    public ReceiverTest(TransientService transientService, ILogger<ReceiverTest> logger)
-    {
-        _transientService = transientService;
-        _logger = logger;
-    }
-
     public Task<TestResponse?> ReceiveAsync(TestMessage message, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("TransientService: {TransientServiceId}", _transientService.Id);
+        logger.LogInformation("TransientService: {TransientServiceId}", transientService.Id);
         
         return Task.FromResult<TestResponse?>(new TestResponse(message.Value));
     }
 }
 
-public class ReceiverStream : IReceiverStreamAsync<TestMessage, TestResponse>
+public class ReceiverStream(ILogger<ReceiverStream> logger) : IReceiverStreamAsync<TestMessage, TestResponse>
 {
-    private readonly ILogger<ReceiverStream> _logger;
-
-    public ReceiverStream(ILogger<ReceiverStream> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task<TestResponse?> ReceiveAsync(IAsyncEnumerable<TestMessage> stream, CancellationToken cancellationToken)
     {
         var i = 0;
         await foreach (var item in stream.WithCancellation(cancellationToken))
         {
-            _logger.LogInformation("ReceiverStream message: {Message}", item);
+            logger.LogInformation("ReceiverStream message: {Message}", item);
             i++;
         }
 
@@ -44,15 +29,9 @@ public class ReceiverStream : IReceiverStreamAsync<TestMessage, TestResponse>
     }
 }
 
-public class ReceiverStreamChannel : IReceiverStreamChannel<TestMessage, TestResponse>
+public class ReceiverStreamChannel(ILogger<ReceiverStreamChannel> logger)
+    : IReceiverStreamChannel<TestMessage, TestResponse>
 {
-    private readonly ILogger<ReceiverStreamChannel> _logger;
-
-    public ReceiverStreamChannel(ILogger<ReceiverStreamChannel> logger)
-    {
-        _logger = logger;
-    }
-
     public async Task<TestResponse?> ReceiveAsync(ChannelReader<TestMessage> reader, CancellationToken cancellationToken)
     {
         var i = 0;
@@ -60,7 +39,7 @@ public class ReceiverStreamChannel : IReceiverStreamChannel<TestMessage, TestRes
         {
             while (reader.TryRead(out var item))
             {
-                _logger.LogInformation("ReceiverStreamChannel message: {Message}", item);
+                logger.LogInformation("ReceiverStreamChannel message: {Message}", item);
                 i++;
             }
         }

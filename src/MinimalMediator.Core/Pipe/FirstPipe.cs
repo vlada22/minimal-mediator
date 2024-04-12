@@ -3,7 +3,7 @@ using MinimalMediator.Abstractions.Pipeline;
 
 namespace MinimalMediator.Core.Pipe;
 
-public class FirstPipe<TContext, TMessage> : IPipe<TContext, TMessage>
+internal class FirstPipe<TContext, TMessage> : IPipe<TContext, TMessage>
     where TContext : class, IPipeContext<TMessage>
     where TMessage : class
 {

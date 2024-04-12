@@ -4,7 +4,7 @@ using MinimalMediator.Core.Middleware;
 
 namespace MinimalMediator.Core.Pipe;
 
-public static class PipeBuilderExtensions
+internal static class PipeBuilderExtensions
 {
     public static IPipe<PreProcessMiddlewareContext<TMessage>, TMessage> BuildBeforePublishMiddleware<TMessage>(this IPipeBuilder builder)
         where TMessage : class

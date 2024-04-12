@@ -2,21 +2,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MinimalMediator.Core.Container;
 
-public interface IMediatorDependencyContext : IAsyncDisposable
+internal interface IMediatorDependencyContext : IAsyncDisposable
 {
     IServiceProvider ActivationServices { get; }
 }
 
-public sealed class MediatorDependencyContext : IMediatorDependencyContext
+internal sealed class MediatorDependencyContext(IServiceProvider serviceProvider) : IMediatorDependencyContext
 {
     private static ValueTask Empty => new();
-    
-    public MediatorDependencyContext(IServiceProvider serviceProvider)
-    {
-        ActivationServices = serviceProvider;
-    }
 
-    public IServiceProvider ActivationServices { get; }
+    public IServiceProvider ActivationServices { get; } = serviceProvider;
 
     public ValueTask DisposeAsync()
     {
@@ -28,14 +23,9 @@ public sealed class MediatorDependencyContext : IMediatorDependencyContext
     }
 }
 
-public sealed class MediatorDependencyScopedContext : IMediatorDependencyContext
+internal sealed class MediatorDependencyScopedContext(IServiceProvider serviceProvider) : IMediatorDependencyContext
 {
-    private readonly AsyncServiceScope _scope;
-
-    public MediatorDependencyScopedContext(IServiceProvider serviceProvider)
-    {
-        _scope = serviceProvider.CreateAsyncScope();
-    }
+    private readonly AsyncServiceScope _scope = serviceProvider.CreateAsyncScope();
 
     public IServiceProvider ActivationServices => _scope.ServiceProvider;
 

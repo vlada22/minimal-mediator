@@ -3,20 +3,11 @@ using MinimalMediator.Abstractions;
 
 namespace TestSampleAot;
 
-public class Worker : BackgroundService
+public class Worker(ILogger<Worker> logger, IServiceProvider serviceProvider) : BackgroundService
 {
-    private ILogger<Worker> _logger;
-    private readonly IServiceProvider _serviceProvider;
-
-    public Worker(ILogger<Worker> logger, IServiceProvider serviceProvider)
-    {
-        _logger = logger;
-        _serviceProvider = serviceProvider;
-    }
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await using var scope = _serviceProvider.CreateAsyncScope();
+        await using var scope = serviceProvider.CreateAsyncScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
         
         await Publish(mediator);
@@ -33,7 +24,7 @@ public class Worker : BackgroundService
     private async Task SendMessage(IMediator mediator)
     {
        var response = await mediator.SendAsync<TestMessage, TestResponse>(new TestMessage("Hello World!"));
-         _logger.LogInformation("Response: {Response}", response);
+         logger.LogInformation("Response: {Response}", response);
     }
 
     private async Task SendStream(IMediator mediator)
@@ -50,7 +41,7 @@ public class Worker : BackgroundService
         
         var response = await mediator.SendStreamAsync<TestMessage, TestResponse>(StreamAsync());
         
-        _logger.LogInformation("Response from IAsyncEnumerable: {Response}", response);
+        logger.LogInformation("Response from IAsyncEnumerable: {Response}", response);
         
         
         // ChannelReader
@@ -69,7 +60,7 @@ public class Worker : BackgroundService
         
         response = await mediator.SendStreamAsync<TestMessage, TestResponse>(channel.Reader);
         
-        _logger.LogInformation("Response from ChannelReader: {Response}", response);
+        logger.LogInformation("Response from ChannelReader: {Response}", response);
     }
 
     private async Task ReceiveStream(IMediator mediator)
@@ -78,7 +69,7 @@ public class Worker : BackgroundService
         var asyncStream = mediator.ReceiveStreamAsync<TestMessage, TestResponse>(new TestMessage("Hello World!"));
         await foreach (var item in asyncStream)
         {
-            _logger.LogInformation("ReceiveStreamAsync message: {Message}", item);
+            logger.LogInformation("ReceiveStreamAsync message: {Message}", item);
         }
         
         // ChannelReader
@@ -87,7 +78,7 @@ public class Worker : BackgroundService
         {
             while (channelStream.TryRead(out var item))
             {
-                _logger.LogInformation("ReceiveChannelStreamAsync message: {Message}", item);
+                logger.LogInformation("ReceiveChannelStreamAsync message: {Message}", item);
             }
         }
     }

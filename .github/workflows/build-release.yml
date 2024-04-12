@@ -17,7 +17,7 @@ on:
 env:
   FEED_URL: https://api.nuget.org/v3/index.json
   BUILD_CONFIGURATION: 'Release'    
-  DOTNET_VERSION: '8.x'             
+  DOTNET_VERSION: '9.x'             
 
 jobs:
   build_and_test:

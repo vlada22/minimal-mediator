@@ -3,22 +3,15 @@ using MinimalMediator.Core.Context;
 
 namespace MinimalMediator.Core.Pipe;
 
-public class PublishStateMachineDefault<TMessage> : IPublishStateMachine<TMessage>
+internal class PublishStateMachineDefault<TMessage>(IPipeBuilder builder) : IPublishStateMachine<TMessage>
     where TMessage : class
 {
-    private readonly IPipeBuilder _builder;
-
-    public PublishStateMachineDefault(IPipeBuilder builder)
-    {
-        _builder = builder;
-    }
-
     public async Task ProcessAsync(TMessage message, CancellationToken cancellationToken)
     {
-        var pipeBefore = _builder.BuildBeforePublishMiddleware<TMessage>();
-        var pipeAfter = _builder.BuildAfterPublishMiddleware<TMessage>();
-        var pipePublish = _builder.BuildPublishMiddleware<TMessage>();
-        var pipeException = _builder.BuildExceptionHandlerMiddleware<TMessage>();
+        var pipeBefore = builder.BuildBeforePublishMiddleware<TMessage>();
+        var pipeAfter = builder.BuildAfterPublishMiddleware<TMessage>();
+        var pipePublish = builder.BuildPublishMiddleware<TMessage>();
+        var pipeException = builder.BuildExceptionHandlerMiddleware<TMessage>();
 
         try
         {
@@ -26,12 +19,15 @@ public class PublishStateMachineDefault<TMessage> : IPublishStateMachine<TMessag
             await pipePublish.InvokeAsync(new PublishMiddlewareContext<TMessage>(message), cancellationToken);
             await pipeAfter.InvokeAsync(new PostProcessMiddlewareContext<TMessage>(message), cancellationToken);
         }
-        catch (OperationCanceledException)
-        {
-            // Ignore
-        }
         catch (Exception ex)
         {
+            // If there is no exception handler, rethrow the exception since the default behavior is to throw
+            if (pipeException == FirstPipe<ExceptionHandlerMiddlewareContext<TMessage>, TMessage>.Empty)
+            {
+                throw;
+            }
+            
+            // Otherwise, invoke the exception handler
             await pipeException.InvokeAsync(new ExceptionHandlerMiddlewareContext<TMessage>(message, ex), cancellationToken);
         }
     }

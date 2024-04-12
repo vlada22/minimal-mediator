@@ -17,8 +17,8 @@ public static class MinimalMediatorServiceExtensions
         services.Add(ServiceDescriptor.Describe(typeof(IMediatorDependencyContext),
             lifetime == ServiceLifetime.Scoped
                 ? typeof(MediatorDependencyScopedContext)
-                : typeof(MediatorDependencyContext),
-            lifetime == ServiceLifetime.Scoped ? ServiceLifetime.Scoped : ServiceLifetime.Singleton));
+                : typeof(MediatorDependencyContext), 
+            lifetime));
         
         services.AddTransient(typeof(IPipeBuilder), typeof(PipeBuilder));
         services.AddTransient(typeof(IPublishMiddleware<>), typeof(PublishMiddlewareDefault<>));

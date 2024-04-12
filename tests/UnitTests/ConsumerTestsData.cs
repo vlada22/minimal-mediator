@@ -8,87 +8,55 @@ namespace UnitTests;
 
 public record ConsumerMessage(string Message);
 
-public class ConsumerAfterMiddleware : IAfterPublishMiddleware<ConsumerMessage>
+public class ConsumerAfterMiddleware(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IAfterPublishMiddleware<ConsumerMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ConsumerAfterMiddleware(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-
     public Task InvokeAsync(PostProcessMiddlewareContext<ConsumerMessage> context, IPipe<PostProcessMiddlewareContext<ConsumerMessage>, ConsumerMessage> next, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ConsumerAfterMiddleware");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ConsumerAfterMiddleware");
+        sharedService.AddId(lifeTimeService.Id);
         
         return next.InvokeAsync(context, cancellationToken);
     }
 }
 
 [MinimalMediator(Order = 2)]
-public class ConsumerBeforeMiddleware1 : IBeforePublishMiddleware<ConsumerMessage>
+public class ConsumerBeforeMiddleware1(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IBeforePublishMiddleware<ConsumerMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ConsumerBeforeMiddleware1(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task InvokeAsync(PreProcessMiddlewareContext<ConsumerMessage> context, IPipe<PreProcessMiddlewareContext<ConsumerMessage>, ConsumerMessage> next, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ConsumerBeforeMiddleware1");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ConsumerBeforeMiddleware1");
+        sharedService.AddId(lifeTimeService.Id);
         
         return next.InvokeAsync(context, cancellationToken);
     }
 }
 
 [MinimalMediator(Order = 1)]
-public class ConsumerBeforeMiddleware2 : IBeforePublishMiddleware<ConsumerMessage>
+public class ConsumerBeforeMiddleware2(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IBeforePublishMiddleware<ConsumerMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ConsumerBeforeMiddleware2(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task InvokeAsync(PreProcessMiddlewareContext<ConsumerMessage> context, IPipe<PreProcessMiddlewareContext<ConsumerMessage>, ConsumerMessage> next, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ConsumerBeforeMiddleware2");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ConsumerBeforeMiddleware2");
+        sharedService.AddId(lifeTimeService.Id);
         
         return next.InvokeAsync(context, cancellationToken);
     }
 }
 
-public class ConsumerTest : IConsumer<ConsumerMessage>
+public class ConsumerTest(SharedService sharedService, LifeTimeService lifeTimeService)
+    : IConsumer<ConsumerMessage>
 {
-    private readonly SharedService _sharedService;
-    private readonly LifeTimeService _lifeTimeService;
-
-    public ConsumerTest(SharedService sharedService, LifeTimeService lifeTimeService)
-    {
-        _sharedService = sharedService;
-        _lifeTimeService = lifeTimeService;
-    }
-    
     public Task HandleAsync(PublishMiddlewareContext<ConsumerMessage> context, CancellationToken cancellationToken)
     {
-        _sharedService.IncrementCount();
-        _sharedService.AddMessage("ConsumerTest");
-        _sharedService.AddId(_lifeTimeService.Id);
+        sharedService.IncrementCount();
+        sharedService.AddMessage("ConsumerTest");
+        sharedService.AddId(lifeTimeService.Id);
         
         return Task.CompletedTask;
     }

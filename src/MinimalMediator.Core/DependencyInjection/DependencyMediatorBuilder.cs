@@ -9,14 +9,9 @@ using System.Diagnostics.CodeAnalysis;
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
 
-public sealed class DependencyMediatorBuilder : IDependencyMediatorBuilder
+public sealed class DependencyMediatorBuilder(IServiceCollection services) : IDependencyMediatorBuilder
 {
-    public DependencyMediatorBuilder(IServiceCollection services)
-    {
-        Services = services;
-    }
-
-    public IServiceCollection Services { get; }
+    public IServiceCollection Services { get; } = services;
 
     public IDependencyMediatorBuilder AddMiddleware(Type middlewareInterface,
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type middlewareImplementation)
