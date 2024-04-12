@@ -1,5 +1,4 @@
 # Minimal Mediator
-![Github actions](https://github.com/vlada22/minimal-mediator/actions/workflows/dotnet-tests.yml/badge.svg)
 ![Github actions](https://github.com/vlada22/minimal-mediator/actions/workflows/build-release.yml/badge.svg)
 [![Nuget feed](https://img.shields.io/nuget/v/MinimalMediator?label=MinimalMediator)](https://www.nuget.org/packages/MinimalMediator)
 
